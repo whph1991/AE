@@ -39,8 +39,8 @@ class Trainer(BaseTrainer):
         """
         self.model.train()
         self.train_metrics.reset()
-        for batch_idx, (data, target) in enumerate(self.data_loader):
-            data, target = data.to(self.device), target.to(self.device)
+        for batch_idx, (image, _) in enumerate(self.data_loader):
+            data, target = image.view(-1, 28*28).to(self.device), image.view(-1, 28*28).to(self.device)
 
             self.optimizer.zero_grad()
             output = self.model(data)
@@ -82,8 +82,8 @@ class Trainer(BaseTrainer):
         self.model.eval()
         self.valid_metrics.reset()
         with torch.no_grad():
-            for batch_idx, (data, target) in enumerate(self.valid_data_loader):
-                data, target = data.to(self.device), target.to(self.device)
+            for batch_idx, (image, _) in enumerate(self.valid_data_loader):
+                data, target = image.view(-1, 28*28).to(self.device), image.view(-1, 28*28).to(self.device)
 
                 output = self.model(data)
                 loss = self.criterion(output, target)
